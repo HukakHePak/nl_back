@@ -8,7 +8,7 @@ require('express-ws')(app);
 const masagerSocket = require('../masager/socket');
 const masager = require('../masager/route');
 
-app.use(cors());
+app.use(cors({ origin: [/\.github\.io$/] }));
 app.use(express.json());
  
 app.listen(port, () => {
