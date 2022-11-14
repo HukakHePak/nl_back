@@ -36,15 +36,13 @@ router.use(async function (req, res, next) {  // TODO: check last token update
 
     const doc = await db.collection('users').findOne({ token })
 
-    console.log(doc);
-
     if(!doc) {
         res.status(400).send('Unauthorized');
         return;
     }
 
     req.access = {
-        user: doc._id,
+        user: doc,
         token: token,
     };
 
@@ -63,12 +61,13 @@ router.patch('/user', function(req, res) {
 });
 
 router.get('/user/me', function(req, res) {
+    const { email, name} = {...req.access.user};
     
-    res.send('hello world');
+    res.send({ email, name });
 });
 router.get('/messages', function(req, res) {
     
-    res.send('hello world');
+    res.send({ data: []});
 });
 
 module.exports = router;
