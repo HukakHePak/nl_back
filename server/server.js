@@ -3,8 +3,10 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
-const masager = require('../masager/route');
 const mongo = require('./mongo');
+require('express-ws')(app);
+const masagerSocket = require('../masager/socket');
+const masager = require('../masager/route');
 
 app.use(cors());
 app.use(express.json());
@@ -17,8 +19,13 @@ app.listen(port, () => {
         console.log("Successfully connected to MongoDB."); 
     });
 
+    // app.use('/masager/', express.static('../masager'));
+    app.use('/masager/', (req,res) => res.redirect('https://hukakhepak.github.io/masager/'));
     app.use('/masager/api/', masager);
-    app.get('/', (req,res) => res.send('ok'));
+    app.use('/masager/websocket/', masagerSocket);
+    
+    app.get('/', (req,res) => res.redirect('https://hukakhepak.github.io/Note-Lawn/'));
 
   console.log(`Server is running on port: ${port}`);
 });
+

@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../server/mongo').db('masager');
 const crypto = require('crypto');
 const sendMail = require('../server/mail');
+const DATE_DIFF = require('date-diff-js');
 
 router.post('/user', function(req, res) {
     crypto.randomBytes(25, async (err, buf) => {
@@ -30,21 +31,24 @@ router.use(async function (req, res, next) {  // TODO: check last token update
     const token = req.headers?.authorization?.slice(7);
 
     if(!token) {
-        res.status(400).send('Unauthorized');
+        res.status(401).send('Unauthorized');
         return;
     }
 
     const doc = await db.collection('users').findOne({ token })
 
-    console.log(doc);
-
     if(!doc) {
-        res.status(400).send('Unauthorized');
+        res.status(401).send('Unauthorized');
+        return;
+    }
+
+    if(DATE_DIFF(Date.now(), doc.last_update, 'h').output > 72) {
+        res.status(401).send('Unauthorized');
         return;
     }
 
     req.access = {
-        user: doc._id,
+        user: doc,
         token: token,
     };
 
@@ -63,12 +67,22 @@ router.patch('/user', function(req, res) {
 });
 
 router.get('/user/me', function(req, res) {
+    const { email, name} = {...req.access.user};
     
-    res.send('hello world');
+    res.send({ email, name });
 });
-router.get('/messages', function(req, res) {
-    
-    res.send('hello world');
+router.get('/messages', async function(req, res) {
+    const messages = db.collection('messages')
+        .aggregate([{ $lookup: { from: 'users', localField: 'userId', foreignField: '_id', as: 'user' }}]);
+            
+
+    let data = [];
+  
+    for await (let {user, text, createdAt} of messages){
+        data.push({ user: { name: user[0].name, email: user[0].email}, text, createdAt});
+    }
+
+    res.send({ messages: data });
 });
 
 module.exports = router;
