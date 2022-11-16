@@ -26,7 +26,7 @@ app.listen(port, () => {
     app.use('/api/masager/', masager);
     app.use('/websocket/masager/', masagerSocket);
     
-    app.get('/', (req,res) => res.redirect('https://hukakhepak.github.io/Note-Lawn/'));
+    // app.get('/', (req,res) => res.redirect('https://hukakhepak.github.io/Note-Lawn/'));
 
   console.log(`Server is running on port: ${port}`);
 });
