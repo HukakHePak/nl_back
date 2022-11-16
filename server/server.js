@@ -8,8 +8,8 @@ require('express-ws')(app);
 const masagerSocket = require('../masager/socket');
 const masager = require('../masager/route');
 
-app.use(cors({ origin: [/\.github\.io$/] }));
-//app.use(cors());
+app.use(cors({ origin: [/\.github\.io$/, /\:5000$/, /\:8000/] }));
+// app.use(cors());
 app.use(express.json());
  
 app.listen(port, () => {
@@ -21,7 +21,7 @@ app.listen(port, () => {
     });
 
     app.use(express.static('/home/Note-lawn/build/'));
-    //app.use('/masager/', express.static('../masager'));
+    // app.use('/masager/', express.static('../masager'));
     app.use('/masager/', (req,res) => res.redirect('https://hukakhepak.github.io/masager/'));
     app.use('/api/masager/', masager);
     app.use('/websocket/masager/', masagerSocket);

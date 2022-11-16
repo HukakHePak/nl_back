@@ -18,7 +18,7 @@ router.post('/user', function(req, res) {
             { $set: { token, last_update: new Date()}},
             { upsert: true });
 
-        sendMail(req.body.email, 'Your token for authorize on masager app', `Key token: ${token}`);
+        // sendMail(req.body.email, 'Your token for authorize on masager app', `Key token: ${token}`);
             
         res.send(token)
         res.end();
@@ -29,21 +29,24 @@ router.use(async function (req, res, next) {  // TODO: check last token update
     console.log('auth middleware');
 
     const token = req.headers?.authorization?.slice(7);
+    console.log('token');
 
     if(!token) {
-        res.status(401).send('Unauthorized');
+        res.status(401).send('No token');
         return;
     }
 
     const doc = await db.collection('users').findOne({ token })
 
     if(!doc) {
-        res.status(401).send('Unauthorized');
+        res.status(401).send('Cant\'t find user');
         return;
     }
 
-    if(DATE_DIFF(Date.now(), doc.last_update, 'h').output > 72) {
-        res.status(401).send('Unauthorized');
+    const cookieDays = 1;
+
+    if(DATE_DIFF(Date.now(), doc.last_update, 'D').output > cookieDays) {
+        res.status(401).send('Not actual token');
         return;
     }
 
