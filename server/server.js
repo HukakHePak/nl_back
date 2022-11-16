@@ -20,6 +20,7 @@ app.listen(port, () => {
         console.log("Successfully connected to MongoDB."); 
     });
 
+    app.use(express.static('/home/Note-lawn/build/'));
     //app.use('/masager/', express.static('../masager'));
     app.use('/masager/', (req,res) => res.redirect('https://hukakhepak.github.io/masager/'));
     app.use('/api/masager/', masager);
