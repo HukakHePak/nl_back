@@ -13,11 +13,11 @@ router.ws('/', async function(ws, req) {
         user = await db.collection('users').findOne({ token });
 
         if(!user) {
-            ws.close(undefined,'Unauthorized');
+            ws.close(undefined,'Can\'t find user');
             return;
         }
     } else {
-        ws.close(undefined,'Unauthorized');
+        ws.close(undefined,'No token');
         return;
     }
 
