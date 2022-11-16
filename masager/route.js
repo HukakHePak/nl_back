@@ -29,24 +29,23 @@ router.use(async function (req, res, next) {  // TODO: check last token update
     console.log('auth middleware');
 
     const token = req.headers?.authorization?.slice(7);
-    console.log('token');
 
     if(!token) {
-        res.status(401).send('No token');
+        res.status(401).send({error: 'No token'});
         return;
     }
 
     const doc = await db.collection('users').findOne({ token })
 
     if(!doc) {
-        res.status(401).send('Cant\'t find user');
+        res.status(401).send({error: 'Cant\'t find user'});
         return;
     }
 
     const cookieDays = 1;
 
     if(DATE_DIFF(Date.now(), doc.last_update, 'D').output > cookieDays) {
-        res.status(401).send('Not actual token');
+        res.status(401).send({error: 'Not actual token'});
         return;
     }
 
@@ -61,7 +60,7 @@ router.use(async function (req, res, next) {  // TODO: check last token update
 
 router.patch('/user', function(req, res) {
     if(!req.body.name) {
-        res.status(400).send('Name can\'t be emty');
+        res.status(400).send({error: 'Name can\'t be emty'});
         return;
     }
     
