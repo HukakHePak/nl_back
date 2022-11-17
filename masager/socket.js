@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../server/mongo').db('masager');
+const { Users, Messages } = require('./collections');
 
 const clients = [];
 
@@ -10,7 +10,7 @@ router.ws('/', async function(ws, req) {
     let user;
 
     if(token) {
-        user = await db.collection('users').findOne({ token });
+        user = await Users.findOne({ token });
 
         if(!user) {
             ws.close(undefined,'Can\'t find user');
@@ -24,15 +24,12 @@ router.ws('/', async function(ws, req) {
     console.log('client connected: ' + user.name);
     clients.push(ws);
 
-    const messages = db.collection('messages');
-
     ws.on('message', async function(msg, req) {
         try {
             const text = JSON.parse(msg).text.trim();
             if(!text.length) return;
             
-            
-            await messages.insertOne({ userId: user._id, text, createdAt: Date.now()});
+            Messages.insertOne({ userId: user._id, text, createdAt: Date.now()});
 
             const message = { user: { name: user.name, email: user.email }, text, createdAt: Date.now()};
                         
