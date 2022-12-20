@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../server/mongo').db('masager');
 const crypto = require('crypto');
 const mailer = require('../server/mail');
 const DATE_DIFF = require('date-diff-js');
@@ -30,8 +29,8 @@ router.post('/user', function(req, res) {
     });
 });
 
-router.use(async function (req, res, next) {  // TODO: check last token update
-    console.log('auth middleware');
+router.use(async function (req, res, next) {
+    console.log('Masager auth middleware');
 
     const token = req.headers?.authorization?.slice(7);
 
