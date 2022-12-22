@@ -1,37 +1,53 @@
-const mysql = require('mysql'); 
+const mysql = require('mysql');
 
-// mysql.proto
-// mysql.__proto__.call = function(procedure, ...params) {
-//     console.log(procedure);
-// }
+function ArrayOf(str, length) {
+  return Array.from({ length })
+    .map(() => str);
+}
 
-// Object.setPrototypeOf(mysql, { call(procedure, ...params) {
-//     console.log(procedure);
-// }})
+const dbPool = {
+  db(database) {
+    const pool = mysql.createPool({
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database,
+    });
 
+    pool.sql = (sql, params = []) => new Promise((resolve, reject) => {
+      pool.query(sql, params, (err, result) => {
+        if (err) reject(err);
 
-const pool = {
-    db(database) {
-        const pool = mysql.createPool({
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database,
-        });
+        resolve(result);
+      });
+    });
 
-        pool.call = function(name, params, callback) {
-            pool.query(`call ${name}(${params.join(',')})`, function (err, result) {
-                callback(err, result[0]);
-            });
+    /**
+     * Call stored procedure
+     * @param {String} name  name of procedure
+     * @param {Array} params    procedure parameters list
+     * @returns Promise
+     */
+    pool.call = (name, params = []) => pool.sql(`call ${name}(${ArrayOf('?', params.length).join(',')})`, params);
+
+    /**
+     * Execute stored function
+     * @param {String} name  name of function
+     * @param {Array} params    function parameters list
+     * @returns Promise
+     */
+    pool.exec = (name, params = []) => new Promise((resolve, reject) => {
+      pool.query(`select ${name}(${ArrayOf('?', params.length).join(',')})`, params, (err, result) => {
+        if (err) reject(err);
+        try {
+          resolve(Object.values(result[0])[0]);
+        } catch (e) {
+          reject(e);
         }
+      });
+    });
 
-        pool.exec = function(name, params, callback) {
-            pool.query(`select ${name}(${params.join(',')})`, function (err, result) {
-                callback(err, result[0].values[0]);
-            });
-        }
-
-        return pool;
-    }
+    return pool;
+  },
 };
 
-module.exports = pool;
+module.exports = dbPool;
