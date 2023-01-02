@@ -16,7 +16,7 @@ const masager = require('../masager/route');
 const cars = require('../cars/route');
 const carsDb = require('../cars/mysql');
 
-app.use(cors({ origin: [/\.github\.io$/, /:5000$/, /:8000/, /:1234/] }));
+app.use(cors({ origin: [/\.github\.io$/, /:5000$/, /:8000/, /:1234/, /:9090/] }));
 app.use(express.json());
 
 const port = process.env.PORT || 5000;
@@ -44,6 +44,11 @@ app.listen(port, () => {
   });
 
   app.use(express.static('/home/Note-Lawn/build/'));
+
+  app.use('/cars/', express.static('/home/cars/build/'));
+  app.get('/cars/*', (req, res) => {
+    res.sendFile('/home/cars/build/index.html');
+  });
 
   app.use('/masager/', (req, res) => res.redirect('https://hukakhepak.github.io/masager/'));
   app.use('/api/masager/', masager);
