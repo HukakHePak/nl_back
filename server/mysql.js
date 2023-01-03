@@ -1,8 +1,7 @@
 const mysql = require('mysql');
 
-function ArrayOf(str, length) {
-  return Array.from({ length })
-    .map(() => str);
+function genCalling(name, length) {
+  return `${name}(${Array.from({ length }).map(() => '?').join(',')})`;
 }
 
 const dbPool = {
@@ -21,30 +20,16 @@ const dbPool = {
       });
     });
 
-    /**
-     * Call stored procedure
-     * @param {String} name  name of procedure
-     * @param {Array} params    procedure parameters list
-     * @returns Promise
-     */
-    pool.call = (name, params = []) => pool.sql(`call ${name}(${ArrayOf('?', params.length).join(',')})`, params);
+    pool.exec = (name, params = []) => pool.sql(`select ${genCalling(name, params.length)}`, params)
+      .then((result) => String(Object.values(result[0])[0]));
 
-    /**
-     * Execute stored function
-     * @param {String} name  name of function
-     * @param {Array} params    function parameters list
-     * @returns Promise
-     */
-    pool.exec = (name, params = []) => new Promise((resolve, reject) => {
-      pool.query(`select ${name}(${ArrayOf('?', params.length).join(',')})`, params, (err, result) => {
-        if (err) reject(err);
-        try {
-          resolve(Object.values(result[0])[0]);
-        } catch (e) {
-          reject(e);
-        }
+    pool.call = (name, params = []) => pool.sql(`call ${genCalling(name, params.length)}`, params)
+      .then((result) => {
+        if (!Array.isArray(result)) return undefined;
+        if (result.length === 2) return result[0];
+
+        return result.slice(0, -1).map((array) => (array.length === 1 ? array[0] : array));
       });
-    });
 
     return pool;
   },
