@@ -1,37 +1,44 @@
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    auth: {
-        user: process.env.MAIL_LOGIN,
-        pass: process.env.MAIL_KEY,
-    },
-});
+const options = {
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  auth: {
+    user: process.env.MAIL_LOGIN,
+    pass: process.env.MAIL_KEY,
+  },
+};
 
-var func = (to, sub) => console.error('not sended before initial', to, sub);
+const transporter = nodemailer.createTransport(options);
 
-const mailer = (...args) => func(...args);
+let send = (to, sub) => console.error('not send before initial', to, sub);
 
-transporter.verify((err, success) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log('Ready to send mail!');
+const mailer = (...args) => send(...args);
 
-        func = (to, subject, content) => {
-            transporter.sendMail({
-                from: process.env.MAIL_LOGIN, to, subject,
-                html: content
-            }, function (err, reply) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log('mail sent', to, subject)
-                }
-            });
-        }
-    }
+transporter.verify((err) => {
+  if (err) {
+    console.error('Mail init connection error.', err.response);
+  } else {
+    console.log('Ready to send mail!');
+
+    send = (to, subject, content) => {
+      transporter.sendMail(
+        {
+          from: process.env.MAIL_LOGIN,
+          to,
+          subject,
+          html: content,
+        },
+        (e) => {
+          if (e) {
+            console.error(e);
+          } else {
+            console.log('mail sent', to, subject);
+          }
+        },
+      );
+    };
+  }
 });
 
 module.exports = mailer;
