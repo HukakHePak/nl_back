@@ -1,7 +1,7 @@
 const access = {
   admin: 'admin',
   manager: 'manager',
-  storekeeper: 'storekeeper',
+  stuff: 'stuff',
   unauth: 'unauth',
 };
 
