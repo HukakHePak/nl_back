@@ -4,6 +4,8 @@ const execution = require('./middlewares/execution');
 
 const router = express.Router();
 
+router.use('/public', execution);
+
 router.use(authorization);
 
 router.get('/help', (req, res) => {

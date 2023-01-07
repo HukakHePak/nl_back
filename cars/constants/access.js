@@ -1,8 +1,9 @@
 const access = {
-  admin: 'admin',
-  manager: 'manager',
-  stuff: 'stuff',
-  unauth: 'unauth',
+  director: 'D',
+  admin: 'A',
+  manager: 'M',
+  stuff: 'S',
+  unauth: 'U',
 };
 
 module.exports = access;

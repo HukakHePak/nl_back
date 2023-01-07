@@ -52,7 +52,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/me', (req, res) => {
-  const { staff_num: login, password } = req.session.user;
+  const { login, password } = req.session.user;
 
   authorize([login, password, false], req, res);
 });
