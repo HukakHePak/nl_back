@@ -34,15 +34,15 @@ const executes = {
 
   // CARS
   get_cars: {
-    access: [manager, admin, director, stuff],
+    access: [manager, director, stuff],
     type: P,
   },
   get_public_cars: {
     access: unauth,
     type: P,
   },
-  get_cars_sold: {
-    access: [director, manager],
+  get_cars_by_filter: {
+    access: [manager, director, stuff],
   },
   create_car: {
     access: [stuff],
@@ -155,6 +155,9 @@ const executes = {
   create_option_arrive: {
     access: [stuff],
   },
+  get_options_by_filter: {
+    access: [stuff, manager],
+  },
 
   // ORDER
   create_order: {
@@ -184,7 +187,16 @@ const executes = {
     access: [manager],
   },
 
-  //
+  // CUSTOMER
+  create_customer: {
+    access: [manager],
+  },
+  edit_customer: {
+    access: [manager],
+  },
+  get_customers_by_filter: {
+    access: [manager],
+  },
 };
 
 module.exports = executes;
