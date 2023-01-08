@@ -24,7 +24,10 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "start": "nodemon server/server.js --exec 'npx eslint ./ --fix && node'"
+    "start": "nodemon server/server.js --exec 'npx eslint ./ --fix && node'",
+    "restart": "pm2 restart server/server.js",
+    "server": "pm2 start server/server.js",
+    "stop": "pm2 stop server/server.js"
   },
   "keywords": [
     "notes",
