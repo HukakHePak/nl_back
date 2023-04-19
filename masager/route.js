@@ -102,6 +102,7 @@ router.get('/messages', async (req, res) => {
         as: 'user',
       },
     },
+    {$unwind: '$user'}
   ]);
 
   res.send({ messages: await messages.toArray() });
