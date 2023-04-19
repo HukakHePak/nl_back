@@ -7,9 +7,11 @@ const db = require('../mysql');
 router.use(
   cookieSession({
     name: 'cars_app_cookies',
-    secret: process.env.CARS_SECRET,
-    maxAge: 7 * 24 * 60 * 60 * 1000, // week
-    // maxAge: 60 * 60 * 1000, // hour
+    secret: process.env.CARS_SECRET || 'nullable',
+    maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+    sameSite: 'none',
+    httpOnly: true,
+    secure: true,
   }),
 );
 

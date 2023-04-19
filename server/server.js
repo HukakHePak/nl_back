@@ -15,8 +15,10 @@ const masager = require('../masager/route');
 
 const cars = require('../cars/route');
 const carsDb = require('../cars/mysql');
+const { successConnectLog } = require('../utils/utils');
 
-app.use(cors({ origin: [/\.github\.io$/, /:5000$/, /:8000/, /:1234/, /:9090/] }));
+app.use(cors({ origin: [/\.github\.io$/, /:5000$/, /:8000/, /:1234/, /:9090/], credentials: true }));
+app.enable('trust proxy');
 app.use(express.json());
 
 const port = process.env.PORT || 5000;
@@ -24,23 +26,23 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   mongo.connect((err, db) => {
     if (!db || err) {
-      throw new Error('MongoDB init connection error.');
+      throw ErrorConnect('MongoDB');
     }
-    console.log('Successfully connected to MongoDB.');
+    successConnectLog('MongoDB');
   });
 
   mongoose
     .connect(process.env.MONGOOSE)
-    .then(() => console.log('Succesfully connected: Mongoose.'))
+    .then(() => successConnectLog('Mongoose'))
     .catch(() => {
-      throw new Error('Mongoose init connection error.');
+      throw ErrorConnect('Mongoose');
     });
 
   carsDb.getConnection((err) => {
     if (err) {
-      throw new Error('DB carshow init connection error.');
+      throw ErrorConnect('DB Carshow');
     }
-    console.log('Successfully connected to db carshow.');
+    successConnectLog('DB Carshow');
   });
 
   app.use(express.static('/home/Note-Lawn/build/'));
