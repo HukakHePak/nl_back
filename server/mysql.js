@@ -26,8 +26,9 @@ const dbPool = {
     pool.call = (name, params = []) => pool.sql(`call ${genCalling(name, params.length)}`, params)
       .then((result) => {
         if (!Array.isArray(result)) return undefined;
+
         if (result.length === 2) {
-          return result[0].length === 1 ? result[0][0] : result[0];
+          return result[0];
         }
 
         return result.slice(0, -1).map((array) => (array.length === 1 ? array[0] : array));
