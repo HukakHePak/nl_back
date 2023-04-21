@@ -22,7 +22,9 @@ router.get('/logout', (req, res) => {
 
 function authorize(params, req, res) {
   db.call('authorize', params)
-    .then((user) => {
+    .then((data) => {
+      const [user] = data;
+
       if (user?.iduser) {
         req.session.user = user;
         res.send(user);
