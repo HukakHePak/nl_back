@@ -118,7 +118,11 @@ const executes = {
   },
 
   // COMPLECTATION
-  get_complectation_names_by_model: {
+  get_complectation_names: {
+    access: unauth,
+    type: P,
+  },
+  get_complectations_by_model: {
     access: unauth,
     type: P,
   },
