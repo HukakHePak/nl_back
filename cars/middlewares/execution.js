@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../mysql');
 const executes = require('../constants/executes');
-const { unauth } = require('../constants/access');
+const { unauth, developer } = require('../constants/access');
 const { F } = require('../constants/type');
 
 router.post('/:name', (req, res) => {
@@ -22,7 +22,7 @@ router.post('/:name', (req, res) => {
 
   const { access, type } = execute;
 
-  if (access === unauth || (session?.user && access?.includes(session.user.type))) {
+  if (access === unauth || (session?.user && (session.user.type === developer || access?.includes(session.user.type)))) {
     const func = type === F ? db.exec : db.call;
 
     func(name, body)
