@@ -4,6 +4,7 @@ const access = {
   manager: 'M',
   stuff: 'S',
   unauth: 'U',
+  developer: 'V',
 };
 
 module.exports = access;
