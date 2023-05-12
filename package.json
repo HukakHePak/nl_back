@@ -6,9 +6,6 @@
     "stop": "pm2 stop server/server.js",
     "lint": "eslint ./ --fix"
   },
-  "nodemonConfig": {
-    "ext": "js,json,ts"
-  },
   "name": "note-lawn_backend",
   "version": "1.0.0",
   "description": "multi priject for all my services",
