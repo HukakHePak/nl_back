@@ -1,3 +1,3 @@
-const pool = require('../server/mysql');
+const pool = require("../server/mysql")
 
-module.exports = pool.db('carshow');
+module.exports = pool.db("carshow")

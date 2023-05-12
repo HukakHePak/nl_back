@@ -1,1 +1,1 @@
-module.exports = { F: 'function', P: 'procedure' };
+module.exports = { F: "function", P: "procedure" }
