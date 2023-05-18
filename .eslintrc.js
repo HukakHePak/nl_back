@@ -9,7 +9,8 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
-    "no-console": "off",
-    "no-underscore-dangle": "off"
+    "no-console": "warn",
+    "no-underscore-dangle": "warn",
+    "no-unused-vars": "warn"
   }
 }

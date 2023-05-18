@@ -16,8 +16,10 @@ const masager = require("../masager/route")
 const cars = require("../cars/route")
 const carsDb = require("../cars/mysql")
 const { successConnectLog, ErrorConnect } = require("../utils/utils")
+const decors = require("./de-cors")
 
-app.use(cors({ origin: [/\.github\.io$/, /:5000$/, /:8000/, /:1234/, /:9090/], credentials: true }))
+app.use(decors) //  TODO: add token for limit non-origin requests
+
 app.enable("trust proxy")
 app.use(express.json())
 
