@@ -1,9 +1,8 @@
 const express = require("express")
 
 const app = express()
-const cors = require("cors")
 
-require("dotenv").config({ path: "config.env" })
+require("dotenv").config()
 
 const mongoose = require("mongoose")
 const mongo = require("./mongo")
