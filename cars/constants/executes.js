@@ -1,206 +1,203 @@
-const {
-  admin, manager, stuff, unauth, director,
-} = require('./access');
+const { admin, manager, stuff, unauth, director } = require("./access")
 
-const { P, F } = require('./type');
+const { P, F } = require("./type")
 
 const executes = {
-
   // USER
   authorize: {
     access: unauth,
-    type: P,
+    type: P
   },
   change_password: {
     access: [director, admin, manager, stuff],
-    type: P,
+    type: P
   },
   get_users: {
     access: [admin],
-    type: P,
+    type: P
   },
   get_users_by_filter: {
     access: [admin],
-    type: P,
+    type: P
   },
   edit_user: {
-    access: [admin],
+    access: [admin]
   },
 
   // STATISTIC
   get_order_statistic: {
-    access: [director],
+    access: [director]
   },
 
   // CARS
   get_cars: {
     access: [manager, director, stuff],
-    type: P,
+    type: P
   },
   get_public_cars: {
     access: unauth,
-    type: P,
+    type: P
   },
   get_cars_by_filter: {
-    access: [manager, director, stuff],
+    access: [manager, director, stuff]
   },
   create_car: {
-    access: [stuff],
+    access: [stuff]
   },
   edit_car: {
-    access: [stuff],
+    access: [stuff]
   },
   get_car_info: {
-    access: unauth,
+    access: unauth
   },
   is_car_sold: {
     access: [director, manager],
-    type: F,
+    type: F
   },
   is_car_reserved: {
     access: [manager],
-    type: F,
+    type: F
   },
   who_reserve_car: {
-    access: [manager],
+    access: [manager]
   },
 
   // BRAND
   create_brand: {
     access: [stuff],
-    type: P,
+    type: P
   },
   delete_brand: {
     access: [stuff],
-    type: P,
+    type: P
   },
   get_brands: {
     access: unauth,
-    type: P,
+    type: P
   },
 
   // MODEL
   get_models_by_brand: {
-    access: unauth,
+    access: unauth
   },
   create_model: {
-    access: [stuff],
+    access: [stuff]
   },
   delete_model: {
-    access: [stuff],
+    access: [stuff]
   },
   // ENGINE
   get_engines_by_filter: {
-    access: unauth,
+    access: unauth
   },
   create_engine: {
-    access: [stuff],
+    access: [stuff]
   },
   delete_engine: {
-    access: [stuff],
+    access: [stuff]
   },
 
   // TYPES
   get_compress_types: {
-    access: unauth,
+    access: unauth
   },
   get_fuel_types: {
-    access: unauth,
+    access: unauth
   },
   get_kpp_types: {
-    access: unauth,
+    access: unauth
   },
   get_drive_types: {
-    access: unauth,
+    access: unauth
   },
   get_option_types: {
-    access: unauth,
+    access: unauth
   },
 
   // COMPLECTATION
   get_complectation_names: {
     access: unauth,
-    type: P,
+    type: P
   },
   get_complectations_by_model: {
     access: unauth,
-    type: P,
+    type: P
   },
   delete_complectation: {
-    access: [stuff],
+    access: [stuff]
   },
   create_complectation: {
-    access: [stuff],
+    access: [stuff]
   },
 
   // OPTIONS
   delete_option: {
-    access: [stuff],
+    access: [stuff]
   },
   create_option: {
-    access: [stuff],
+    access: [stuff]
   },
   get_car_complect_options: {
-    access: unauth,
+    access: unauth
   },
   get_order_options: {
-    access: [director, manager],
+    access: [director, manager]
   },
   create_order_option: {
-    access: [manager],
+    access: [manager]
   },
   delete_order_option: {
-    access: [manager],
+    access: [manager]
   },
   get_option_avialable_amount: {
     access: [manager, stuff],
-    type: F,
+    type: F
   },
   create_option_arrive: {
-    access: [stuff],
+    access: [stuff]
   },
   get_options_by_filter: {
-    access: [stuff, manager],
+    access: [stuff, manager]
   },
 
   // ORDER
   create_order: {
-    access: [manager],
+    access: [manager]
   },
   delete_order: {
-    access: [manager],
+    access: [manager]
   },
   make_order_sold: {
-    access: [manager],
+    access: [manager]
   },
   make_order_reserved: {
-    access: [manager],
+    access: [manager]
   },
   unreserve_order: {
-    access: [manager],
+    access: [manager]
   },
 
   // PAYMENT
   get_order_payments: {
-    access: [director, manager],
+    access: [director, manager]
   },
   create_payment: {
-    access: [manager],
+    access: [manager]
   },
   cancel_payment: {
-    access: [manager],
+    access: [manager]
   },
 
   // CUSTOMER
   create_customer: {
-    access: [manager],
+    access: [manager]
   },
   edit_customer: {
-    access: [manager],
+    access: [manager]
   },
   get_customers_by_filter: {
-    access: [manager],
-  },
-};
+    access: [manager]
+  }
+}
 
-module.exports = executes;
+module.exports = executes
