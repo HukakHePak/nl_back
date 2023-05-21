@@ -5,10 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "nodemon server/server.js  --exec \"npm run lint --fix && node\"",
-    "restart": "pm2 restart server/server.js",
-    "server": "pm2 start server/server.js",
-    "stop": "pm2 stop server/server.js",
-    "build": "webpack && pkg -t node16-alpine --output build/setup ./build/server.js",
+    "build": "webpack",
     "lint": "eslint ./ --fix"
   },
   "keywords": [

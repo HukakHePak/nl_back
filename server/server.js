@@ -48,10 +48,7 @@ app.listen(port, () => {
 
   app.use(express.static("/home/Note-Lawn/build/"))
 
-  app.use("/cars/", express.static("/home/cars/build/"))
-  app.get("/cars/*", (req, res) => {
-    res.sendFile("/home/cars/build/index.html")
-  })
+  app.use("/public/", express.static("./public"))
 
   app.use("/masager/", (req, res) => res.redirect("https://hukakhepak.github.io/masager/"))
   app.use("/api/masager/", masager)

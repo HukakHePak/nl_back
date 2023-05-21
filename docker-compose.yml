@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  static:
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    image: hukakhepak/note-lawn

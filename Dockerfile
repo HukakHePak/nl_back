@@ -1,6 +1,8 @@
-FROM node:16-slim
-WORKDIR /app
+FROM node:16-slim as build
 COPY . .
-RUN npm i --production
-CMD ["node", "server/server.js"]
+RUN npm i 
+RUN npx webpack && npx pkg --o build/setup -t node14-linuxstatic -C GZip ./build/server.js
 
+FROM scratch
+COPY --from=build build/setup .
+CMD ["./setup"]
