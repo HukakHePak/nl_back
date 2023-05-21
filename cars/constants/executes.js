@@ -157,7 +157,7 @@ const executes = {
     access: [stuff]
   },
   get_options_by_filter: {
-    access: [stuff, manager]
+    access: [unauth, stuff, manager]
   },
 
   // ORDER
